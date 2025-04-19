@@ -71,6 +71,13 @@
       transform: translateY(-8px) scale(1.03);
       box-shadow: 0 10px 35px rgba(0,0,0,0.2);
     }
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      object-fit: cover;
+    }
     .product-card h3 {
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
@@ -84,18 +91,17 @@
       margin: 0.5rem 0;
       color: #ddd;
     }
-    /* Updated actions styling for equal-width buttons */
     .product-card .actions {
       display: flex;
-      gap: 0.5rem;          /* uniform spacing between buttons */
+      gap: 0.5rem;
       margin-top: 0.5rem;
     }
     .product-card .actions a.button-link,
     .product-card .actions button {
-      flex: 1;              /* each button/link grows equally */
-      text-align: center;   /* center the text */
-      padding: 0.6rem 0;    /* consistent height */
-      margin: 0;            /* reset margins */
+      flex: 1;
+      text-align: center;
+      padding: 0.6rem 0;
+      margin: 0;
       background-color: var(--orange);
       color: white;
       font-weight: bold;
@@ -159,14 +165,19 @@
       <a href="#">Cart</a>
     </div>
   </header>
+
   <div class="container">
     <main class="product-grid">
       {% for pro in prod %}
         <div class="product-card">
+          {% if pro.image %}
+            <img src="{{ pro.image.url }}" alt="{{ pro.name }}">
+          {% endif %}
           <h3>{{ pro.name }}</h3>
           <p class="price">₹{{ pro.price }}</p>
           <p class="description">{{ pro.description }}</p>
           <p class="description">Stock: {{ pro.stock }}</p>
+
           <div class="actions">
             <a href="{% url 'edit_product' pro.id %}" class="button-link">Edit</a>
             <button>Buy Now</button>
@@ -175,9 +186,10 @@
         </div>
       {% endfor %}
     </main>
+
     <div class="form-container">
       <h2>Customize Your Product</h2>
-      <form method="post">
+      <form method="post" action="#" enctype="multipart/form-data">
         {% csrf_token %}
         {{ fm.as_p }}
         <button type="submit">Submit</button>

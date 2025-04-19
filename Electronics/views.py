@@ -8,7 +8,7 @@ def home(request):
     prod = Product.objects.all()
     fm = ProductForm()
     if request.method == "POST":
-        fm = ProductForm(request.POST)
+        fm = ProductForm(request.POST, request.FILES)
     if fm.is_valid():
         fm.save()
         return redirect ("home")
