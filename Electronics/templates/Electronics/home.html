@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon 3D</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #f90;
+      --black: #111;
+      --white: #fff;
+      --gray: #e6e6e6;
+      --hover: #ffcc80;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: rgba(0, 0, 0, 0.85);
+      color: var(--white);
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: var(--black);
+    }
+    .navbar .logo {
+      font-size: 1.8rem;
+      color: var(--orange);
+      font-weight: bold;
+    }
+    .navbar nav a, .navbar .actions a {
+      color: var(--white);
+      margin-left: 1.2rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .navbar nav a:hover, .navbar .actions a:hover {
+      color: var(--hover);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 1rem;
+    }
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .product-card {
+      background: rgba(230,230,230,0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      width: 250px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: var(--white);
+    }
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+    }
+    .product-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .product-card p.price {
+      color: var(--orange);
+      font-weight: bold;
+    }
+    .product-card .description {
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+      color: #ddd;
+    }
+    /* Updated actions styling for equal-width buttons */
+    .product-card .actions {
+      display: flex;
+      gap: 0.5rem;          /* uniform spacing between buttons */
+      margin-top: 0.5rem;
+    }
+    .product-card .actions a.button-link,
+    .product-card .actions button {
+      flex: 1;              /* each button/link grows equally */
+      text-align: center;   /* center the text */
+      padding: 0.6rem 0;    /* consistent height */
+      margin: 0;            /* reset margins */
+      background-color: var(--orange);
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .product-card .actions a.button-link:hover,
+    .product-card .actions button:hover {
+      background-color: #fb8c00;
+    }
+    .form-container {
+      background: rgba(230,230,230,0.1);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+      margin-top: 4rem;
+      color: var(--white);
+    }
+    .form-container h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .form-container input,
+    .form-container select,
+    .form-container textarea {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+    }
+    .form-container button {
+      background-color: var(--orange);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Amazon</div>
+    <nav>
+      <a href="#">Today's Deals</a>
+      <a href="#">Electronics</a>
+      <a href="#">Fashion</a>
+      <a href="#">Home</a>
+    </nav>
+    <div class="actions">
+      <a href="#">Login</a>
+      <a href="#">Cart</a>
+    </div>
+  </header>
+  <div class="container">
+    <main class="product-grid">
+      {% for pro in prod %}
+        <div class="product-card">
+          <h3>{{ pro.name }}</h3>
+          <p class="price">₹{{ pro.price }}</p>
+          <p class="description">{{ pro.description }}</p>
+          <p class="description">Stock: {{ pro.stock }}</p>
+          <div class="actions">
+            <a href="{% url 'edit_product' pro.id %}" class="button-link">Edit</a>
+            <button>Buy Now</button>
+            <a href="{% url 'delete_product' pro.id %}" class="button-link">Delete</a>
+          </div>
+        </div>
+      {% endfor %}
+    </main>
+    <div class="form-container">
+      <h2>Customize Your Product</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ fm.as_p }}
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
