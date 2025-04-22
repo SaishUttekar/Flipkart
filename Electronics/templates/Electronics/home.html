@@ -161,7 +161,12 @@
       <a href="#">Home</a>
     </nav>
     <div class="actions">
-      <a href="#">Login</a>
+      <form method="post" action="{% url 'Electronics:logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="background-color: var(--orange); border: none; color: var(--white); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;">
+          Logout
+        </button>
+      </form>
       <a href="#">Cart</a>
     </div>
   </header>
